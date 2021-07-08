@@ -31,7 +31,7 @@ public class InsertionSort {
             // 设立一个临时变量暂存本轮选定的值 (tempValue=arr[i]=arr[jIndex])
             E tempValue = arr[i];
             // 确定这个临时值应该在数组中出现的index
-            int jIndex;
+            int jIndex;  // Index of tempValue
             // 从i(jIndex)开始向前看，每次都是本轮j的位置和j-1比较。
             for (jIndex = i; jIndex >= 1; jIndex--) {
                 // 如果前面比选定值大：那就让前面一个的值向当前复制(相当于向后平移一位)，不用怕当前值(tempValue)丢失，因为前面暂存了
@@ -64,3 +64,5 @@ public class InsertionSort {
 
     }
 }
+
+//测试一下new branch和merge
