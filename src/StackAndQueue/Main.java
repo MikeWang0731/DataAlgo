@@ -10,5 +10,19 @@ public class Main {
 
         stack.pop();
         System.out.println(stack);
+
+        System.out.println("====== Queue ======");
+
+        ArrayQueue<Integer> queue = new ArrayQueue<>();
+        for (int i = 0; i < 5; i++) {
+            queue.enqueue(i);
+        }
+        System.out.println(queue);
+
+        queue.enqueue(5);
+        System.out.println(queue);
+
+        queue.dequeue();
+        System.out.println(queue.getFront());
     }
 }
