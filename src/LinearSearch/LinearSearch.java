@@ -1,7 +1,5 @@
 package LinearSearch;
 
-import java.security.AlgorithmParameterGenerator;
-
 public class LinearSearch {
 
     private LinearSearch() {
