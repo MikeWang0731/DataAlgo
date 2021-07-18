@@ -213,4 +213,6 @@ public class OurLinkedList<E> {
 
         return result.toString();
     }
+
+    // 拓展： 双链表 (Node prev, next)、以及双循环链表
 }
