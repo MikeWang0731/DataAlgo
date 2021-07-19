@@ -1,7 +1,5 @@
 package Leetcode;
 
-import org.w3c.dom.Node;
-
 public class LC203 {
 
     public static class ListNode {
