@@ -166,6 +166,8 @@ public class OurLinkedList<E> {
         return false;
     }
 
+
+    
     // 删除指定位置的元素
     public E remove(int index) {
         // 判断index的合法性
