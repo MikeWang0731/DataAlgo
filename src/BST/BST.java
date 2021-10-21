@@ -1,5 +1,7 @@
 package BST;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BST<E extends Comparable<E>> {
@@ -56,6 +58,8 @@ public class BST<E extends Comparable<E>> {
             root_node.right = add(root_node.right, e);
         }
 
+        size++;
+
         // 将这棵树的根节点（连带着子树）返回
         return root_node;
     }
@@ -82,6 +86,7 @@ public class BST<E extends Comparable<E>> {
             return contains(node.right, e);
         }
     }
+
     // ***************** 深度优先遍历：前中后序 *******************
     // 前序遍历整个树：先访问节点，后访问子树
     public void preOrder() {
@@ -149,7 +154,152 @@ public class BST<E extends Comparable<E>> {
         postOrder(node.right);
         System.out.println(node.e);
     }
+
     // ***************** 广度有限遍历：层序遍历 *******************
+    public void levelOrder() {
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node current = q.remove();
+            System.out.println(current.e);
+
+            if (current.left != null) {
+                q.add(current.left);
+            }
+            if (current.right != null) {
+                q.add(current.right);
+            }
+        }
+    }
+
+    // ***************** 删除元素 *******************
+    // 寻找二分搜索树的最小元素
+    public E minimum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("Tree is Empty.");
+        }
+        return minimum(root).e;
+    }
+
+    private Node minimum(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return minimum(node.left);
+    }
+
+    // 寻找二分搜索树的最大元素
+    public E maximum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("Tree is Empty.");
+        }
+        return maximum(root).e;
+    }
+
+    private Node maximum(Node node) {
+        if (node.right == null) {
+            return node;
+        }
+        return maximum(node.right);
+    }
+
+    // 删除二分搜索树中的最小节点，并返回它
+    public E removeMin() {
+        E ret = minimum();
+        // 将删除后的新树重新赋值给root
+        root = removeMin(root);
+        return ret;
+    }
+
+    // 删除以node为根的二分搜索树的最小节点，并返回删除节点后新的二分搜索树的根
+    private Node removeMin(Node node) {
+        // 如果没有左侧了，就说明这个点就是最小的
+        if (node.left == null) {
+            // 但这个点可能有右侧子树，所以我们保存一下
+            Node rightNode = node.right;
+            // 右侧子树置null
+            node.right = null;
+            size--;
+            // 将右侧子树的头节点作为新root返回（当然也可能没有子树）
+            return rightNode;
+        }
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    // 删除二分搜索树中的最小节点，并返回它
+    public E removeMax() {
+        E ret = maximum();
+        // 将删除后的新树重新赋值给root
+        root = removeMax(root);
+        return ret;
+    }
+
+    // 删除以node为根的二分搜索树的最小节点，并返回删除节点后新的二分搜索树的根
+    private Node removeMax(Node node) {
+        // 如果没有左侧了，就说明这个点就是最小的
+        if (node.right == null) {
+            // 但这个点可能有右侧子树，所以我们保存一下
+            Node leftNode = node.left;
+            // 右侧子树置null
+            node.left = null;
+            size--;
+            // 将右侧子树的头节点作为新root返回（当然也可能没有子树）
+            return leftNode;
+        }
+        node.right = removeMax(node.right);
+        return node;
+    }
+
+    // 删除指定元素
+    public void remove(E e) {
+        root = remove(root, e);
+    }
+    // 删除以node为根的树中值为e的那个节点，递归算法，并返回新的树的根
+    private Node remove(Node node, E e) {
+        if (node == null) {
+            return null;
+        }
+        // 如果e比当前值小，那么就找左侧
+        if (e.compareTo(node.e) < 0) {
+            // 尝试在左侧删除，并将删除后的结果重新给左侧节点
+            node.left = remove(node.left, e);
+            return node;
+        } else if (e.compareTo(node.e) > 0) { // 找右侧
+            node.right = remove(node.right, e);
+            return node;
+        } else { // e == node.e -> 找到了！
+            // 左侧为空
+            if (node.left == null) {
+                Node rightNode = node.right;
+                node.right = null;
+                size--;
+                return rightNode;
+            }
+            // 右侧为空
+            if (node.right == null) {
+                Node leftNode = node.left;
+                node.left = null;
+                size--;
+                return leftNode;
+            }
+            // 两侧都不为空！
+            // 找到比待删除节点大的最小的那个节点(e.g. 删59找60)，即待删除节点右侧子树的最小节点
+            // 用这个节点来顶替位置
+
+            // 找到右侧的最小值，successor指向这个最小值
+            Node successor = minimum(node.right);
+            // 注意这是removeMin(Node node),不是removeMin()!!!这里会返回删除后新的二叉树的根！
+            // 将原来node右侧的树删除最小值之后，剩下的部分连在那个最小值上(这是算法步骤)
+            successor.right = removeMin(node.right);
+            // 将左侧子树原封不动的链接在最小值上
+            successor.left = node.left;
+            // 到这里，这一小部分的树我们就完全拷贝并操作完成了。将原来的节点置null，删除。
+            node.left = node.right = null;
+            // 返回新的最小值组成的树
+            return successor; // successor由原来大树的"递归层上面那一层的"left或right接着
+        }
+    }
 
 
     // ***************** 格式化输出 ********************

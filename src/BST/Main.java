@@ -1,15 +1,26 @@
 package BST;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Main {
     public static void main(String[] args) {
         BST<Integer> bst = new BST<Integer>();
-        int[] nums = {5, 3, 6, 7, 1, 4, 2, 8};
-        for (int num : nums) {
-            bst.add(num);
-        }
+        Random random = new Random();
 
-        bst.preOrder();
-        System.out.println("==================");
-        bst.preOrderNonRecursive();
+        // 为测试用例添加元素
+        int N_TIMES = 1000;
+        for (int i = 0; i < N_TIMES; i++) {
+            bst.add(random.nextInt(10000));
+        }
+        ArrayList<Integer> nums = new ArrayList<>();
+        // 如果bst不为空，那么就不断的删除最小值，并将最小值保存在nums
+        int t = 10;
+        while (t >= 0) {
+            nums.add(bst.removeMin());
+            t--;
+        }
+        // 那么这个nums应该是一个由小到大排序的数组
+        System.out.println(nums);
     }
 }
