@@ -1,5 +1,6 @@
 package QuickSort;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class QuickSort {
@@ -62,5 +63,10 @@ public class QuickSort {
         int n = 1000000;
         Integer[] arr = ArrayGenerator.generateRandomArray(n, n);
         SortingHelper.sortTest("QuickSort", arr);
+
+        Integer[] arr2 = {5, 3, 2, 9, 6, 8, 7, 1};
+        sort(arr2);
+        System.out.println("QuickSort: " + Arrays.toString(arr2));
+
     }
 }

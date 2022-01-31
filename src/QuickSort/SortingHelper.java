@@ -22,7 +22,7 @@ public class SortingHelper {
         long startTime = System.nanoTime();
 
         if (algoName.equals("QuickSort")) {
-            MergeSort.sort(arrayInput);
+            QuickSort.sort(arrayInput);
         } else {
             System.out.println("None.");
         }
