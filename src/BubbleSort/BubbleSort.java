@@ -14,9 +14,10 @@ public class BubbleSort {
      */
 
     public static <E extends Comparable<E>> void sort(E[] arr) {
-        // 外层循环控制基准指针（用于找到当前元素），外层基准到数组的倒数第二个元素截止，即i = arr.length-2(i < arr.length - 1)
+        // 外层循环控制计数，外层计数到数组的倒数第二个元素截止，即i = arr.length-2(i < arr.length - 1)，因为是当前一个和后面一个比较
+        // 当当前的为倒数第二个时，本轮比较的就是[倒数第二个]和[最后一个]，刚好比较完
         for (int i = 0; i < arr.length - 1; i++) {
-            // 内层循环控制比较指针（找到“下一个元素”进行比较）
+            // 内层循环控制基准指针arr[j]（用于找到当前元素）和比较指针arr[j+1]（找到“下一个元素”进行比较）
             for (int j = 0; j < arr.length - i - 1; j++) {
                 // 当前是arr[j]，下一个是arr[j+1]
                 // 如果大于就交换，把小的放前面
@@ -30,9 +31,7 @@ public class BubbleSort {
     // 针对极小部分无序但是绝大部分有序的情况，例如123465进行优化
     // 目标：使算法在排序完需要排序的那部分之后就退出
     public static <E extends Comparable<E>> void sortOptimize(E[] arr) {
-        // 外层循环控制基准指针（用于找到当前元素），外层基准到数组的倒数第二个元素截止，即i = arr.length-2(i < arr.length - 1)
         for (int i = 0; i < arr.length - 1; i++) {
-            // 内层循环控制比较指针（找到“下一个元素”进行比较）
             // 当本轮没有交换发生，即(round 1)123465->(round 2)123456，意味着已经全部有序
             boolean isSwapped = false;
             for (int j = 0; j < arr.length - i - 1; j++) {
@@ -53,9 +52,7 @@ public class BubbleSort {
     // 经过第一轮之后变为2134567，其中34567都是有序的，我们不需要再遍历
     // 所以我们可以记录下来最后进行交换的位置，用(数组长度-交换位置)可以直接得到在下一轮中需要被swap的index，减少操作次数
     public static <E extends Comparable<E>> void sortOptimizeTwo(E[] arr) {
-        // 外层循环控制基准指针（用于找到当前元素），外层基准到数组的倒数第二个元素截止，即i = arr.length-2(i < arr.length - 1)
         for (int i = 0; i < arr.length - 1; i++) {
-            // 内层循环控制比较指针（找到“下一个元素”进行比较）
             // 默认的最后一个交换位置是0
             int lastSwapIndex = 0;
             for (int j = 0; j < arr.length - i - 1; j++) {
@@ -70,7 +67,9 @@ public class BubbleSort {
             // 找到下一次需要被交换的基准元素的index
             // 这里不需要额外声明(if lastIndex==0: break)是因为，如果lastIndex为0，那么i就是arr.length
             // 不满足for运行条件，直接退出
+            System.out.println("当前i是" + i + "，last index是" + lastSwapIndex + ",下一轮的i是" + (arr.length - lastSwapIndex));
             i = arr.length - lastSwapIndex;
+            System.out.println("arr:" +   Arrays.toString(arr));
         }
     }
 
